@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import SaveTabButton from "./SaveTabButton";
 
 const SaveTabs = ({ setLoggedIn }) => {
   const [canSendTabData, setCanSendTabData] = useState(true);
@@ -7,6 +8,12 @@ const SaveTabs = ({ setLoggedIn }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [tabGroupName, setTabGroupName] = useState("");
+  const [popupMenuTransition, setPopupMenuTransition] = useState(-1);
+  // 3 different states to show the 3 different possible versions of the popup menu:
+  // (State 0) The "Save tabs" prompt
+  // (State 1) The "Enter name for group of tabs:" prompt
+  // (State 2) The "Your tabs were saved!" prompt
+  // (State 3) The "You need to sign-in at (website url) to save your tabs!" prompt, which shows after not being able to send the tabs because the user isn't signed in
 
   async function getAllTabsInCurrentWindow() {
     var tabInformation = [];
@@ -22,7 +29,6 @@ const SaveTabs = ({ setLoggedIn }) => {
 
   async function sendTabInfo(event) {
     event.preventDefault();
-    //console.log("the tab group name: ", tabGroupName);
     const tabGroupNameAsFormData = new URLSearchParams();
     tabGroupNameAsFormData.append("tabGroupName", tabGroupName);
 
@@ -81,6 +87,15 @@ const SaveTabs = ({ setLoggedIn }) => {
   //       setLoggedIn(0); // if there was an error calling the Flask API, then by default the user won't be logged in
   //     });
   // }
+
+  // function popupMenu() {
+  //   if (!clickedSaveTabs) {
+  //     return <SaveTabButton setClickedSaveTabs={setClickedSaveTabs} />;
+  //   } else if() {
+
+  //   }
+  // }
+
   return (
     <div>
       {/* <button onClick={checkIfUserLoggedIn}> */}
